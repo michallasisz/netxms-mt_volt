@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<formatVersion>4</formatVersion>
+	<description>voltage_tools</description>
+	<events>
+	</events>
+	<templates>
+	</templates>
+	<traps>
+	</traps>
+	<rules>
+	</rules>
+	<scripts>
+		<script id="10016">
+			<guid>6ed71661-65f0-42e0-bca0-87d10ce9cd7c</guid>
+			<name>readvoltmt</name>
+			<code>if ($1 == null)&#x0A;{&#x0A;   println &quot;Please specify node name as parameter&quot;;&#x0A;   return 3;&#x0A;}&#x0A; &#x0A;transport = CreateSNMPTransport(FindObject($1));&#x0A;if (transport == null)&#x0A;{&#x0A;    println &quot;Failed to create SNMP transport, exit&quot;;&#x0A;    return 1;&#x0A;}&#x0A; &#x0A;value = SNMPGetValue(transport, &quot;.1.3.6.1.4.1.14988.1.1.3.8.0&quot;);&#x0A;if (value == null)&#x0A;{&#x0A;    println &quot;Failed to issue SNMP GET request&quot;;&#x0A;    return 2;&#x0A;}&#x0A;else&#x0A;{&#x0A;    println &quot;volt is: &quot; . value;&#x0A;    threshold = round(value - (0.15 * value));&#x0A;    println &quot;threshold for current reading will be: &quot; . threshold;&#x0A;    current = 222.1;&#x0A;    return 0;&#x0A;}</code>
+		</script>
+		<script id="10018">
+			<guid>ce30b57a-2456-4ab5-943c-ab411da12d88</guid>
+			<name>deletevoltmt</name>
+			<code>if ($1 == null)&#x0A;{&#x0A;   println &quot;Please specify node name as parameter&quot;;&#x0A;   return 3;&#x0A;}&#x0A;$node = FindNodeObject(null,$1);&#x0A;&#x0A;DeleteCustomAttribute($node, &quot;mt_ref_voltage&quot;);&#x0A;DeleteCustomAttribute($node, &quot;mt_ref_voltage_threshold&quot;);</code>
+		</script>
+	</scripts>
+	<objectTools>
+		<objectTool id="10009">
+			<name>MT-&gt;VOLT-&gt;Show_MT_volt</name>
+			<guid>a96db0f3-3f85-446c-908d-0de8d464efb2</guid>
+			<type>8</type>
+			<data>readvoltmt %n</data>
+			<description></description>
+			<flags>2</flags>
+			<filter>&lt;objectMenuFilter&gt;&#x0A;   &lt;toolOS&gt;&lt;/toolOS&gt;&#x0A;   &lt;toolWorkstationOS&gt;&lt;/toolWorkstationOS&gt;&#x0A;   &lt;toolTemplate&gt;&lt;/toolTemplate&gt;&#x0A;   &lt;toolCustomAttributes&gt;&lt;/toolCustomAttributes&gt;&#x0A;   &lt;snmpOid&gt;&lt;/snmpOid&gt;&#x0A;   &lt;flags&gt;0&lt;/flags&gt;&#x0A;&lt;/objectMenuFilter&gt;</filter>
+			<confirmation></confirmation>
+			<commandName></commandName>
+			<commandShortName></commandShortName>
+			<image></image>
+		</objectTool>
+		<objectTool id="10010">
+			<name>MT-&gt;VOLT-&gt;Delete_MT_volt</name>
+			<guid>5ab8759c-5a43-4d66-9eb4-90607657ea84</guid>
+			<type>8</type>
+			<data>deletevoltmt %n</data>
+			<description></description>
+			<flags>2</flags>
+			<filter>&lt;objectMenuFilter&gt;&#x0A;   &lt;toolOS&gt;&lt;/toolOS&gt;&#x0A;   &lt;toolWorkstationOS&gt;&lt;/toolWorkstationOS&gt;&#x0A;   &lt;toolTemplate&gt;&lt;/toolTemplate&gt;&#x0A;   &lt;toolCustomAttributes&gt;&lt;/toolCustomAttributes&gt;&#x0A;   &lt;snmpOid&gt;&lt;/snmpOid&gt;&#x0A;   &lt;flags&gt;0&lt;/flags&gt;&#x0A;&lt;/objectMenuFilter&gt;</filter>
+			<confirmation></confirmation>
+			<commandName></commandName>
+			<commandShortName></commandShortName>
+			<image></image>
+		</objectTool>
+	</objectTools>
+	<dciSummaryTables>
+	</dciSummaryTables>
+	<actions>
+	</actions>
+</configuration>
